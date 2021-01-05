@@ -3,11 +3,11 @@
 # Image Setup
 #--------------------------------------------------------------------------
 #
-ARG PHP_VERSION=7.4
-
 FROM phusion/baseimage:0.11
 
 LABEL maintainer="Cosmo Weng <cosmos-s@hotmail.com.tw>"
+
+ARG PHP_VERSION=7.4
 
 RUN DEBIAN_FRONTEND=noninteractive
 RUN locale-gen en_US.UTF-8
@@ -95,14 +95,14 @@ RUN apt-get install -y cmake doxygen g++ make git python \
 # opencc4php:
 #####################################
 
-RUN apt-get install -y php7.0-dev \
+RUN apt-get install -y php7.4-dev \
   && cd /tmp && git clone https://github.com/NauxLiu/opencc4php.git && cd opencc4php \
   && phpize \
   && ./configure \
-  && make && make install \
-  && apt-get purge -y php7.0-dev
+  && make && make install
+# && apt-get purge -y php7.0-dev
 
-# COPY ./php_mods/opencc.ini /etc/php/${PHP_VERSION}/mods-available/opencc.ini
+COPY ./php_mods/opencc.ini /etc/php/${PHP_VERSION}/mods-available/opencc.ini
 
 RUN phpenmod opencc
 
